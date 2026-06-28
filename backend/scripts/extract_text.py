@@ -5,6 +5,15 @@ import logging
 import hashlib
 from pathlib import Path
 import fitz  # PyMuPDF
+import sys
+
+max_int = sys.maxsize
+while True:
+    try:
+        csv.field_size_limit(max_int)
+        break
+    except OverflowError:
+        max_int = int(max_int / 10)
 
 # Initialize Logging Configuration for Enterprise Systems
 logging.basicConfig(
