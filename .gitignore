@@ -1,0 +1,60 @@
+# ========================================
+# Python
+# ========================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.log
+
+# Virtual Environments
+.venv/
+backend/.venv/
+venv/
+
+# Environment Variables
+.env
+.env.*
+
+# ========================================
+# Python Caches
+# ========================================
+.pytest_cache/
+.mypy_cache/
+
+# ========================================
+# VS Code / IDE
+# ========================================
+.vscode/
+.idea/
+
+# ========================================
+# ChromaDB Database
+# ========================================
+backend/database/chromadb/
+
+# ========================================
+# Generated Knowledge Base
+# ========================================
+backend/knowledge_base/processed/
+
+# ========================================
+# Frontend
+# ========================================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# ========================================
+# OS Files
+# ========================================
+.DS_Store
+Thumbs.db
+
+# Raw knowledge base
+backend/knowledge_base/raw/
+
+# Processed knowledge base
+backend/knowledge_base/processed/
+
+# ChromaDB
+backend/database/chromadb/
