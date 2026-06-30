@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Lawyer Assistant Demo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #f8fafc, #eef2ff);
+        color: #1f2937;
+      }
+      .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 24px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+      }
+      h1 { margin-top: 0; }
+      textarea, button { font-size: 16px; }
+      textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        box-sizing: border-box;
+        margin-bottom: 12px;
+      }
+      button {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 10px;
+        background: #2563eb;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover { background: #1d4ed8; }
+      .result {
+        margin-top: 20px;
+        padding: 16px;
+        background: #f8fafc;
+        border-left: 4px solid #2563eb;
+        border-radius: 10px;
+        white-space: pre-wrap;
+        line-height: 1.5;
+      }
+      .meta { color: #6b7280; font-size: 14px; margin-top: 8px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>AI Lawyer Assistant Demo</h1>
+      <p>Ask a legal question and test the backend response structure.</p>
+      <textarea id="query" placeholder="Example: What is Article 21 in the Indian Constitution?"></textarea>
+      <button onclick="sendQuery()">Ask the Assistant</button>
+      <div id="result" class="result">Ask a question to see the assistant answer structure.</div>
+    </div>
+
+    <script>
+      async function sendQuery() {
+        const query = document.getElementById('query').value.trim();
+        const resultBox = document.getElementById('result');
+
+        if (!query) {
+          resultBox.textContent = 'Please enter a question.';
+          return;
+        }
+
+        resultBox.textContent = 'Sending request...';
+
+        try {
+          const response = await fetch('http://127.0.0.1:8000/chat/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query, top_k: 5 })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            resultBox.textContent = JSON.stringify(data, null, 2);
+            return;
+          }
+
+          resultBox.innerHTML = `
+            <strong>Answer</strong>\n${data.answer || 'No answer returned.'}\n\n
+            <div class="meta">Confidence: ${data.confidence ?? 'n/a'}</div>
+            <div class="meta">Sources: ${data.citations?.length || 0}</div>
+            <div class="meta">Retrieved documents: ${data.retrieved_documents?.length || 0}</div>
+          `;
+        } catch (error) {
+          resultBox.textContent = 'Error: ' + error.message;
+        }
+      }
+    </script>
+  </body>
+</html>
