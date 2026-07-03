@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { authService } from './auth.service';
-
-const API_BASE = (import.meta.env.VITE_API_BASE_URL as string) || 'http://127.0.0.1:8000';
+import { apiUrl } from './api';
 
 export interface UploadAnalysisResult {
   fileName: string;
@@ -26,8 +25,8 @@ export const uploadService = {
     formData.append('file', file);
 
     const url = sessionId
-      ? `${API_BASE}/upload/?session_id=${encodeURIComponent(sessionId)}`
-      : `${API_BASE}/upload/`;
+      ? `${apiUrl('/upload/')}?session_id=${encodeURIComponent(sessionId)}`
+      : apiUrl('/upload/');
 
     const response = await axios.post<UploadAnalysisResult>(url, formData, { headers });
     return response.data;

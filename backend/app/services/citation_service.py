@@ -10,12 +10,16 @@ class CitationService:
             title = metadata.get("title") or document.get("title") or f"Source {index}"
             url = metadata.get("url") or document.get("url") or ""
             source = metadata.get("source") or document.get("source") or "local"
+            text = (document.get("text") or "")[:300].strip()
+            section = metadata.get("section") or ""
             citations.append(
                 {
                     "id": f"[{index}]",
                     "title": title,
                     "source": source,
                     "url": url,
+                    "section": section,
+                    "description": text or "See referenced source for details.",
                 }
             )
         return citations

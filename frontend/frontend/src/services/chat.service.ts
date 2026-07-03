@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { Citation } from '../types';
 import { authService } from './auth.service';
-
-const API_BASE = (import.meta.env.VITE_API_BASE_URL as string) || 'http://127.0.0.1:8000';
+import { apiUrl } from './api';
 
 export interface ChatResponse {
   answer: string;
@@ -26,7 +25,7 @@ export const chatService = {
     const headers = await getAuthHeaders();
 
     const response = await axios.post(
-      `${API_BASE}/chat/`,
+      apiUrl('/chat/'),
       { query: prompt, top_k: 5, session_id: sessionId },
       { headers }
     );

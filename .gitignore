@@ -43,6 +43,9 @@ backend/knowledge_base/processed/
 frontend/node_modules/
 frontend/dist/
 frontend/build/
+frontend/frontend/node_modules/
+frontend/frontend/dist/
+frontend/frontend/build/
 
 # ========================================
 # OS Files

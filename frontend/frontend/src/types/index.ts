@@ -37,8 +37,8 @@ export interface ChatSession {
 }
 
 export interface UserStats {
-  casesAnalyzed: number;
-  totalChats: number;
-  draftsGenerated: number;
-  savedCitations: number;
+  total_chats: number;
+  documents_analyzed: number;
+  drafts_generated: number;
+  saved_citations: number;
 }

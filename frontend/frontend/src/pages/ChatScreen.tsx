@@ -6,12 +6,10 @@ import {
   Paperclip,
   Scale,
   Search,
-  HelpCircle,
   ExternalLink,
   ChevronRight,
   X,
   BookOpen,
-  ArrowRight,
   FileText,
   AlertCircle,
 } from 'lucide-react';
@@ -42,27 +40,31 @@ const ChatScreen: React.FC = () => {
   // Load or create session
   useEffect(() => {
     const loadSession = async () => {
-      let currentId = id;
+      try {
+        let currentId = id;
 
-      if (!currentId) {
-        const sessions = await historyService.getSessions();
-        if (sessions.length > 0) {
-          navigate(`/chat/${sessions[0].id}`, { replace: true });
+        if (!currentId) {
+          const sessions = await historyService.getSessions();
+          if (sessions.length > 0) {
+            navigate(`/chat/${sessions[0].id}`, { replace: true });
+            return;
+          }
+          const newSession = await historyService.createSession('New Consultation');
+          navigate(`/chat/${newSession.id}`, { replace: true });
           return;
         }
-        const newSession = await historyService.createSession('New Consultation');
-        navigate(`/chat/${newSession.id}`, { replace: true });
-        return;
-      }
 
-      const session = await historyService.getSessionById(currentId);
-      if (session) {
-        setSessionId(session.id);
-        setSessionTitle(session.title);
-        setMessages(session.messages);
-        setActiveCitation(null);
-      } else {
-        navigate('/chat', { replace: true });
+        const session = await historyService.getSessionById(currentId);
+        if (session) {
+          setSessionId(session.id);
+          setSessionTitle(session.title);
+          setMessages(session.messages);
+          setActiveCitation(null);
+        } else {
+          navigate('/chat', { replace: true });
+        }
+      } catch (error) {
+        console.error('Could not load or create chat history session.', error);
       }
     };
 
@@ -86,7 +88,28 @@ const ChatScreen: React.FC = () => {
 
   const handleSendMessage = async (textToSend?: string) => {
     const text = (textToSend ?? inputText).trim();
-    if (!text || !sessionId) return;
+    if (!text) return;
+
+    let activeSessionId = sessionId;
+    if (!activeSessionId) {
+      try {
+        const newSession = await historyService.createSession('New Consultation');
+        activeSessionId = newSession.id;
+        setSessionId(newSession.id);
+        setSessionTitle(newSession.title);
+        navigate(`/chat/${newSession.id}`, { replace: true });
+      } catch (error) {
+        console.error('Could not create saved chat session.', error);
+        const errMsg: Message = {
+          id: `err_${Date.now()}`,
+          sender: 'ai',
+          text: 'I could not create a saved chat session. Please verify your login and backend history configuration, then try again.',
+          timestamp: new Date().toISOString(),
+        };
+        setMessages((prev) => [...prev, errMsg]);
+        return;
+      }
+    }
 
     if (!textToSend) setInputText('');
 
@@ -106,7 +129,7 @@ const ChatScreen: React.FC = () => {
     }, 850);
 
     try {
-      const response = await chatService.getResponse(text, sessionId, (chunk) => {
+      const response = await chatService.getResponse(text, activeSessionId, (chunk) => {
         clearTimeout(stepTimer);
         setIsSearching(false);
         setIsStreaming(true);
@@ -122,7 +145,9 @@ const ChatScreen: React.FC = () => {
         sources: response.sources,
       };
       setMessages((prev) => [...prev, aiMsg]);
-    } catch (err) {
+      window.dispatchEvent(new Event('chat-history-updated'));
+    } catch (error) {
+      console.error('Chat request failed.', error);
       clearTimeout(stepTimer);
       const errMsg: Message = {
         id: `err_${Date.now()}`,

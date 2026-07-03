@@ -1,5 +1,6 @@
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel
-from typing import List, Optional
 
 
 class UploadResponse(BaseModel):
@@ -10,3 +11,5 @@ class UploadResponse(BaseModel):
     suggestedPrompts: List[str]
     storageUrl: Optional[str] = None
     documentId: Optional[str] = None
+    userMessage: Optional[Dict[str, Any]] = None
+    assistantMessage: Optional[Dict[str, Any]] = None

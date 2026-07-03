@@ -3,9 +3,12 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-ENV_FILE = BASE_DIR / ".env"
-load_dotenv(dotenv_path=ENV_FILE, override=False)
+BACKEND_DIR = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = BACKEND_DIR.parent
+
+for env_file in (PROJECT_ROOT / ".env", BACKEND_DIR / ".env"):
+    if env_file.exists():
+        load_dotenv(dotenv_path=env_file, override=False)
 
 
 class Settings:

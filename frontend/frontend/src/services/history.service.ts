@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { ChatSession, Message, Citation } from '../types';
 import { authService } from './auth.service';
+import { apiUrl } from './api';
 
-const API_BASE = (import.meta.env.VITE_API_BASE_URL as string) || 'http://127.0.0.1:8000';
-const API = `${API_BASE}/history`;
+const API = apiUrl('/history');
 
 const getAuthHeaders = async (): Promise<Record<string, string>> => {
   const token = await authService.getAccessToken();

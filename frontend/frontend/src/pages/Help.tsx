@@ -1,5 +1,5 @@
 import React from 'react';
-import { HelpCircle, BookOpen, AlertTriangle, Compass } from 'lucide-react';
+import { HelpCircle, BookOpen, Compass } from 'lucide-react';
 
 const Help: React.FC = () => {
   const codeTranslations = [

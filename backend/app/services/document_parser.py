@@ -17,6 +17,8 @@ class DocumentParser:
             return self._parse_pdf(file_path)
         if extension == ".docx":
             return self._parse_docx(file_path)
+        if extension == ".doc":
+            return self._parse_legacy_doc(file_path)
         if extension == ".txt":
             return self._parse_txt(file_path)
         if extension in {".png", ".jpg", ".jpeg"}:
@@ -35,6 +37,21 @@ class DocumentParser:
     def _parse_docx(self, file_path: str) -> str:
         doc = Document(file_path)
         return "\n".join(p.text for p in doc.paragraphs).strip()
+
+    def _parse_legacy_doc(self, file_path: str) -> str:
+        try:
+            from unstructured.partition.auto import partition
+
+            elements = partition(filename=file_path)
+            text = "\n".join(str(element) for element in elements).strip()
+            if text:
+                return text
+        except Exception as exc:
+            logger.warning("Legacy DOC parsing failed for %s: %s", file_path, exc)
+
+        raise ValueError(
+            "Legacy .doc parsing failed. Please upload a .docx, .pdf, or .txt version."
+        )
 
     def _parse_txt(self, file_path: str) -> str:
         with open(file_path, "r", encoding="utf-8", errors="replace") as f:

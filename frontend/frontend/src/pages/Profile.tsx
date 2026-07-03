@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
-  User,
   Scale,
   MapPin,
-  BookOpen,
   CheckCircle,
   Edit3,
 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 import { profileService } from '../services/profile.service';
 
 interface StatsShape {

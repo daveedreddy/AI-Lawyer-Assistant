@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
-  Home, 
   MessageSquare, 
   History, 
   User, 
@@ -16,8 +15,8 @@ import {
   Plus,
   Scale
 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/useAuth';
+import { useTheme } from '../context/useTheme';
 import { historyService } from '../services/history.service';
 import { ChatSession } from '../types';
 import Watermark from '../components/Watermark';
@@ -34,14 +33,20 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [recentChats, setRecentChats] = useState<ChatSession[]>([]);
 
-  // Reload history sessions on path changes (especially chat page updates)
+  // Reload history sessions on path changes and after chat messages are saved.
  useEffect(() => {
   const loadChats = async () => {
-    const chats = await historyService.getSessions();
-    setRecentChats(chats.slice(0, 5));
+    try {
+      const chats = await historyService.getSessions();
+      setRecentChats(chats.slice(0, 5));
+    } catch {
+      setRecentChats([]);
+    }
   };
 
   loadChats();
+  window.addEventListener('chat-history-updated', loadChats);
+  return () => window.removeEventListener('chat-history-updated', loadChats);
 }, [location]);
 
 const handleNewChat = async () => {

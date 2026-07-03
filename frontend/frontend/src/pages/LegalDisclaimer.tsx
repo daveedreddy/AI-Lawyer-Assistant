@@ -1,5 +1,5 @@
 import React from 'react';
-import { Scale, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { AlertTriangle, ShieldCheck } from 'lucide-react';
 
 const LegalDisclaimer: React.FC = () => {
   return (

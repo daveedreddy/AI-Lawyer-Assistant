@@ -10,7 +10,7 @@ import {
   Calendar,
   Compass,
 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 import { profileService } from '../services/profile.service';
 import { historyService } from '../services/history.service';
 import { ChatSession } from '../types';

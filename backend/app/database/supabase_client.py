@@ -34,3 +34,12 @@ def get_supabase():
     except Exception as exc:
         logger.error("Failed to initialize Supabase client: %s", exc)
         return None
+
+
+def require_supabase():
+    client = get_supabase()
+    if client is None:
+        raise RuntimeError(
+            "Supabase is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY."
+        )
+    return client

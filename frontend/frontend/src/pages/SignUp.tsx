@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as zod from 'zod';
 import { Scale, Mail, Lock, User, ShieldAlert, AlertCircle, ArrowRight } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 
 const signupSchema = zod.object({
   fullName: zod.string().min(3, 'Full name must be at least 3 characters'),

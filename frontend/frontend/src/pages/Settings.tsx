@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../context/useTheme';
 import {
   Globe,
   Sliders,
@@ -10,6 +10,7 @@ import {
   Info,
 } from 'lucide-react';
 import { profileService } from '../services/profile.service';
+import { API_BASE_URL } from '../services/api';
 
 const Settings: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
@@ -18,9 +19,7 @@ const Settings: React.FC = () => {
   const [model, setModel] = useState('nvidia');
   const [temp, setTemp] = useState(0.3);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [apiBaseUrl, setApiBaseUrl] = useState(
-    (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:8000'
-  );
+  const [apiBaseUrl, setApiBaseUrl] = useState(API_BASE_URL);
   const [showSaveAlert, setShowSaveAlert] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -32,6 +31,8 @@ const Settings: React.FC = () => {
         setLanguage(s.language || 'en');
         setModel(s.model_preference || 'nvidia');
         setNotificationsEnabled(s.notifications_enabled ?? true);
+        setTemp(s.temperature ?? 0.3);
+        setApiBaseUrl(s.api_base_url || API_BASE_URL);
         // Apply theme from DB if different from current
         if (s.theme && s.theme !== theme) {
           toggleTheme();
@@ -50,6 +51,8 @@ const Settings: React.FC = () => {
         language,
         model_preference: model,
         notifications_enabled: notificationsEnabled,
+        temperature: temp,
+        api_base_url: apiBaseUrl,
       });
       setShowSaveAlert(true);
       setTimeout(() => setShowSaveAlert(false), 2000);

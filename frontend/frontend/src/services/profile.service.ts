@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { authService } from './auth.service';
-
-const API_BASE = (import.meta.env.VITE_API_BASE_URL as string) || 'http://127.0.0.1:8000';
+import { apiUrl } from './api';
 
 export interface UserStats {
   total_chats: number;
@@ -25,6 +24,8 @@ export interface UserSettings {
   language: string;
   model_preference: string;
   notifications_enabled: boolean;
+  temperature: number;
+  api_base_url?: string;
 }
 
 const getHeaders = async (): Promise<Record<string, string>> => {
@@ -35,13 +36,13 @@ const getHeaders = async (): Promise<Record<string, string>> => {
 export const profileService = {
   async getUserStats(): Promise<UserStats> {
     const headers = await getHeaders();
-    const { data } = await axios.get(`${API_BASE}/profile/stats`, { headers });
+    const { data } = await axios.get(apiUrl('/profile/stats'), { headers });
     return data;
   },
 
   async getProfile(): Promise<UserProfile> {
     const headers = await getHeaders();
-    const { data } = await axios.get(`${API_BASE}/profile/`, { headers });
+    const { data } = await axios.get(apiUrl('/profile/'), { headers });
     return data;
   },
 
@@ -58,19 +59,19 @@ export const profileService = {
     if (updates.practiceAreas !== undefined) body.practice_areas = updates.practiceAreas;
     if (updates.location !== undefined) body.location = updates.location;
 
-    const { data } = await axios.patch(`${API_BASE}/profile/`, body, { headers });
+    const { data } = await axios.patch(apiUrl('/profile/'), body, { headers });
     return data;
   },
 
   async getSettings(): Promise<UserSettings> {
     const headers = await getHeaders();
-    const { data } = await axios.get(`${API_BASE}/profile/settings`, { headers });
+    const { data } = await axios.get(apiUrl('/profile/settings'), { headers });
     return data;
   },
 
   async updateSettings(settings: Partial<UserSettings>): Promise<UserSettings> {
     const headers = await getHeaders();
-    const { data } = await axios.patch(`${API_BASE}/profile/settings`, settings, { headers });
+    const { data } = await axios.patch(apiUrl('/profile/settings'), settings, { headers });
     return data;
   },
 };
