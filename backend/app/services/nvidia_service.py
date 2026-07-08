@@ -54,10 +54,11 @@ class NvidiaService:
             completion = client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": prompt}],
-                temperature=0.2,
-                top_p=0.95,
-                max_tokens=1800,
+                temperature=0.1,
+                top_p=0.9,
+                max_tokens=900,
                 stream=False,
+                timeout=25,
             )
 
             answer = ""
@@ -89,10 +90,11 @@ class NvidiaService:
             stream = client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": prompt}],
-                temperature=0.2,
-                top_p=0.95,
-                max_tokens=1800,
+                temperature=0.1,
+                top_p=0.9,
+                max_tokens=900,
                 stream=True,
+                timeout=25,
             )
             for chunk in stream:
                 if not getattr(chunk, "choices", None):

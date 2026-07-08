@@ -12,7 +12,7 @@ for env_file in (PROJECT_ROOT / ".env", BACKEND_DIR / ".env"):
 
 
 class Settings:
-    APP_NAME = "AI Lawyer Assistant"
+    APP_NAME = "Nyaya Samrakshan"
     APP_VERSION = "1.0.0"
     DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
 

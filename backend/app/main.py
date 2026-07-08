@@ -21,9 +21,9 @@ from app.utils.logging_utils import configure_logging
 configure_logging()
 
 app = FastAPI(
-    title="AI Lawyer Assistant API",
+    title="Nyaya Samrakshan API",
     version="1.0.0",
-    description="AI-powered legal assistant with RAG and live legal search.",
+    description="Plain-language Indian legal information assistant with RAG and live source search.",
     docs_url="/docs",
     redoc_url="/redoc",
 )
@@ -55,7 +55,7 @@ app.add_exception_handler(Exception, unhandled_exception_handler)
 @app.get("/")
 def home():
     return {
-        "project": "AI Lawyer Assistant",
+        "project": "Nyaya Samrakshan",
         "status": "Running Successfully",
         "version": "1.0.0",
     }

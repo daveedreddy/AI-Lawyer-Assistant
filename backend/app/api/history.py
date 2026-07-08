@@ -13,7 +13,7 @@ router = APIRouter(prefix="/history", tags=["History"])
 
 
 class CreateSessionRequest(BaseModel):
-    title: str = Field(default="New Consultation", max_length=160)
+    title: str = Field(default="New Question", max_length=160)
 
 
 class AddMessageRequest(BaseModel):

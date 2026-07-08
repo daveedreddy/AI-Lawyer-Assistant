@@ -58,10 +58,46 @@ class QueryOrchestrator:
         if not documents:
             return []
 
+        if len(documents) <= 2 or top_k <= 2:
+            return sorted(
+                documents,
+                key=lambda item: float(item.get("score", 0.0) or 0.0),
+                reverse=True,
+            )[:top_k]
+
         from app.services.reranker_service import reranker_service
 
         ranked = reranker_service.rerank(query=query, documents=documents, top_k=top_k)
         return ranked[:top_k]
+
+    @staticmethod
+    def _should_use_web_search(query: str, local_results: List[Dict]) -> bool:
+        if not local_results:
+            return True
+
+        query_lower = query.lower()
+        strong_local_match = any(item.get("score", 0.0) >= 0.8 for item in local_results)
+        if strong_local_match:
+            return False
+
+        if any(
+            term in query_lower
+            for term in (
+                "latest",
+                "recent",
+                "amendment",
+                "new",
+                "today",
+                "2024",
+                "2025",
+                "case law",
+                "judgment",
+                "update",
+            )
+        ):
+            return True
+
+        return len(local_results) < 2
 
     def prepare_evidence(
         self,
@@ -80,11 +116,14 @@ class QueryOrchestrator:
             retrieval_service.search(query=retrieval_query, top_k=top_k),
             top_k,
         )
-        web_results = self._prepare_documents(
-            retrieval_query,
-            legal_source_router.search(retrieval_query),
-            top_k,
-        )
+        use_web_search = self._should_use_web_search(retrieval_query, local_results)
+        web_results = []
+        if use_web_search:
+            web_results = self._prepare_documents(
+                retrieval_query,
+                legal_source_router.search(retrieval_query),
+                top_k,
+            )
         documents = local_results + web_results
         context = evidence_fusion_service.build_context(
             local_results=local_results,

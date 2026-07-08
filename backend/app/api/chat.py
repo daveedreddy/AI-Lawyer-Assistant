@@ -12,7 +12,7 @@ from app.services.history_service import history_service
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/chat", tags=["AI Lawyer"])
+router = APIRouter(prefix="/chat", tags=["Nyaya Samrakshan"])
 
 
 class ChatRequest(BaseModel):
@@ -88,7 +88,7 @@ async def chat(
         # 3. Auto-generate session title from first user message
         if session_id and user_id and session:
             try:
-                if session.title in ("New Consultation", ""):
+                if session.title in ("New Consultation", "New Question", ""):
                     new_title = history_service.generate_title(request.query)
                     history_service.update_session_title(session_id, new_title, user_id)
             except RuntimeError as exc:

@@ -91,12 +91,12 @@ class HistoryService:
             _write_local_store(data)
         return _map_session(row)
 
-    def create_session(self, user_id: str, title: str = "New Consultation") -> ChatSession:
+    def create_session(self, user_id: str, title: str = "New Question") -> ChatSession:
         now = _now()
         row = {
             "id": str(uuid4()),
             "user_id": user_id,
-            "title": title.strip() or "New Consultation",
+            "title": title.strip() or "New Question",
             "created_at": now,
             "updated_at": now,
         }
@@ -398,7 +398,7 @@ class HistoryService:
     def generate_title(first_user_message: str) -> str:
         text = first_user_message.strip()
         if len(text) <= 60:
-            return text.rstrip("?.,!") or "New Consultation"
+            return text.rstrip("?.,!") or "New Question"
 
         for delimiter in [".", "?", "!"]:
             idx = text.find(delimiter)
