@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as zod from 'zod';
-import { Scale, Mail, Lock, AlertCircle, ArrowRight } from 'lucide-react';
+import { Scale, Mail, Lock, AlertCircle, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../context/useAuth';
 
 const loginSchema = zod.object({
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
       await login(data.email, data.password);
       navigate('/chat');
     } catch (err: any) {
-      setErrorMsg(err.message || 'Invalid credentials. Please try again.');
+      setErrorMsg(err.message || 'We could not sign you in. Please check your details and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -43,7 +43,7 @@ const Login: React.FC = () => {
   const handleForgotPassword = async () => {
     const email = getValues('email');
     if (!email || !email.includes('@')) {
-      setErrorMsg('Please enter your email address above, then click Forgot Password.');
+      setErrorMsg('Enter your email address above, then choose Forgot Password.');
       return;
     }
     try {
@@ -51,46 +51,44 @@ const Login: React.FC = () => {
       setResetSent(true);
       setErrorMsg(null);
     } catch (err: any) {
-      setErrorMsg(err.message || 'Failed to send reset email.');
+      setErrorMsg(err.message || 'We could not send the reset email.');
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+      <div className="hidden md:flex md:w-1/2 bg-white dark:bg-gray-900 items-center justify-center p-12 relative overflow-hidden border-r border-gray-200 dark:border-gray-800">
+        <div className="absolute inset-0 auth-backdrop-pattern opacity-80" />
+        <div className="auth-rail absolute left-0 right-0 top-20 h-px" />
+        <div className="auth-rail absolute left-0 right-0 bottom-24 h-px animation-delay-700" />
 
-      {/* Decorative Brand Panel */}
-      <div className="hidden md:flex md:w-1/2 bg-gray-200 dark:bg-gray-900 items-center justify-center p-12 relative overflow-hidden border-r border-gray-300 dark:border-gray-800">
-        <div className="absolute inset-0 flex items-center justify-center opacity-5">
-          <Scale size={400} />
-        </div>
-        <div className="relative max-w-lg space-y-6">
-          <div className="p-3 bg-brand-500 text-white rounded-2xl w-fit shadow-lg shadow-brand-500/20">
+        <div className="relative max-w-lg space-y-6 animate-slide-up">
+          <div className="p-3 bg-brand-500 text-white rounded-lg w-fit shadow-lg shadow-brand-500/20">
             <Scale size={32} />
           </div>
           <h2 className="text-3xl font-extrabold tracking-tight font-sans">
-            AI-Driven Indian Legal Advisory Suite
+            Nyaya Samrakshan helps you understand what to do next
           </h2>
           <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-sm">
-            Empower your practice with instant citations, document summaries, BNS/IPC mappings, and regulatory compliant consultation responses.
+            Ask in everyday words, review saved conversations, and turn confusing notices or agreements into clear next steps.
           </p>
-          <div className="pt-4 border-t border-gray-300 dark:border-gray-800">
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
             <p className="italic text-xs text-gray-500 dark:text-gray-400">
-              "In the core of justice lies the truth of argument, amplified by precision."
+              For information and preparation. For urgent or personal matters, consult a qualified professional.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Login Form Panel */}
       <div className="flex-1 flex items-center justify-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8 animate-slide-up">
           <div className="space-y-2">
             <div className="md:hidden p-3 bg-brand-500 text-white rounded-2xl w-fit mb-4">
               <Scale size={24} />
             </div>
-            <h1 className="text-3xl font-bold tracking-tight">Welcome Back</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              Sign in with your legal practitioner account.
+              Sign in to continue with Nyaya Samrakshan.
             </p>
           </div>
 
@@ -103,7 +101,8 @@ const Login: React.FC = () => {
 
           {resetSent && (
             <div className="flex items-center space-x-2.5 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs">
-              <span>✅ Password reset email sent. Please check your inbox.</span>
+              <CheckCircle2 size={16} />
+              <span>Password reset email sent. Please check your inbox.</span>
             </div>
           )}
 
@@ -133,12 +132,12 @@ const Login: React.FC = () => {
                   onClick={handleForgotPassword}
                   className="text-[10px] text-brand-500 hover:underline"
                 >
-                  Forgot Password?
+                  Forgot password?
                 </button>
               </div>
               <input
                 type="password"
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 className={`custom-input ${errors.password ? 'border-red-500 focus:ring-red-500' : ''}`}
                 {...register('password')}
               />
@@ -150,13 +149,13 @@ const Login: React.FC = () => {
               disabled={isSubmitting}
               className="w-full flex items-center justify-center space-x-2 bg-brand-500 hover:bg-brand-600 text-white py-3 rounded-xl shadow-lg shadow-brand-500/15 hover:shadow-brand-500/25 active:scale-[0.99] disabled:opacity-50 transition-all duration-200 text-sm font-semibold"
             >
-              <span>{isSubmitting ? 'Signing In...' : 'Sign In'}</span>
+              <span>{isSubmitting ? 'Signing in...' : 'Sign in'}</span>
               {!isSubmitting && <ArrowRight size={16} />}
             </button>
           </form>
 
           <div className="text-center text-xs text-gray-500 dark:text-gray-400">
-            Don't have an account?{' '}
+            New here?{' '}
             <Link to="/signup" className="text-brand-500 hover:underline font-semibold">
               Create an account
             </Link>

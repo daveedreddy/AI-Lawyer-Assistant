@@ -78,7 +78,7 @@ const ChatHistory: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Consultation History</h1>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-            Browse and manage all previous AI Lawyer advice files.
+            Browse and manage your saved legal help conversations.
           </p>
         </div>
 
@@ -103,7 +103,7 @@ const ChatHistory: React.FC = () => {
           </div>
         ) : filteredSessions.length === 0 ? (
           <div className="p-12 text-center text-xs text-gray-500 dark:text-gray-400">
-            {searchQuery ? 'No consultations matching search query.' : 'No consultation history yet. Start a new chat!'}
+            {searchQuery ? 'No chats match your search.' : 'No chat history yet. Start a new question!'}
           </div>
         ) : (
           <div className="divide-y divide-gray-100 dark:divide-gray-800/80">
@@ -156,7 +156,7 @@ const ChatHistory: React.FC = () => {
                       )}
 
                       <p className="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
-                        {session.summary || 'Consultation file active.'}
+                        {session.summary || 'Conversation ready.'}
                       </p>
 
                       <div className="flex items-center space-x-1.5 text-[10px] text-gray-400">
@@ -170,7 +170,7 @@ const ChatHistory: React.FC = () => {
                     <button
                       onClick={(e) => handleDelete(session.id, e)}
                       className="opacity-0 group-hover:opacity-100 p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all duration-150"
-                      title="Delete History File"
+                      title="Delete chat"
                     >
                       <Trash2 size={15} />
                     </button>

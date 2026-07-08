@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Scale,
   MapPin,
   CheckCircle,
   Edit3,
+  BookOpen,
 } from 'lucide-react';
 import { useAuth } from '../context/useAuth';
 import { profileService } from '../services/profile.service';
@@ -20,7 +20,6 @@ const Profile: React.FC = () => {
   const [stats, setStats] = useState<StatsShape | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [fullName, setFullName] = useState(user?.fullName || '');
-  const [barEnrollment, setBarEnrollment] = useState(user?.barEnrollment || '');
   const [practiceAreas, setPracticeAreas] = useState<string[]>(user?.practiceAreas || []);
   const [newArea, setNewArea] = useState('');
   const [saving, setSaving] = useState(false);
@@ -47,7 +46,7 @@ const Profile: React.FC = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await profileService.updateProfile({ fullName, barEnrollment, practiceAreas });
+      await profileService.updateProfile({ fullName, practiceAreas });
       setIsEditing(false);
     } catch {
       // Update failed — silently stay in edit mode
@@ -79,24 +78,14 @@ const Profile: React.FC = () => {
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white">{fullName}</h2>
                 )}
                 <span className="flex items-center text-[10px] font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                  <CheckCircle size={10} className="mr-1" /> Verified Advocate
+                  <CheckCircle size={10} className="mr-1" /> Account Active
                 </span>
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{user?.email}</p>
               <div className="flex items-center space-x-3 text-xs text-gray-400 mt-2">
                 <div className="flex items-center space-x-1">
-                  <Scale size={13} />
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={barEnrollment}
-                      onChange={(e) => setBarEnrollment(e.target.value)}
-                      placeholder="BCI Enrollment No."
-                      className="px-1.5 py-0.5 text-xs border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 rounded-md focus:ring-1 focus:ring-brand-500"
-                    />
-                  ) : (
-                    <span>BCI Code: {barEnrollment || 'N/A'}</span>
-                  )}
+                  <BookOpen size={13} />
+                  <span>Everyday legal help</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <MapPin size={13} />
@@ -112,13 +101,13 @@ const Profile: React.FC = () => {
             className="flex items-center space-x-1.5 px-4 py-2 border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl text-xs font-semibold transition-all disabled:opacity-50"
           >
             <Edit3 size={13} />
-            <span>{saving ? 'Saving...' : isEditing ? 'Save Profile' : 'Edit Credentials'}</span>
+            <span>{saving ? 'Saving...' : isEditing ? 'Save Profile' : 'Edit Profile'}</span>
           </button>
         </div>
 
-        {/* Practice Areas */}
+        {/* Helpful Topics */}
         <div className="mt-6 pt-5 border-t border-gray-100 dark:border-gray-800/80 space-y-3">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400">Practice Fields</h4>
+          <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400">Helpful Topics</h4>
           <div className="flex flex-wrap gap-2">
             {practiceAreas.map((area, idx) => (
               <span
@@ -135,7 +124,7 @@ const Profile: React.FC = () => {
               <div className="flex items-center space-x-1.5">
                 <input
                   type="text"
-                  placeholder="Add practice area"
+                  placeholder="Add a topic"
                   value={newArea}
                   onChange={(e) => setNewArea(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleAddArea()}
@@ -161,15 +150,15 @@ const Profile: React.FC = () => {
               <p className="text-2xl font-black text-brand-500 mt-1">{stats?.total_chats ?? 0}</p>
             </div>
             <div className="bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-4 text-center">
-              <p className="text-[10px] font-bold text-gray-400 uppercase">Consultations</p>
+              <p className="text-[10px] font-bold text-gray-400 uppercase">Questions Asked</p>
               <p className="text-2xl font-black text-brand-500 mt-1">{stats?.total_chats ?? 0}</p>
             </div>
             <div className="bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-4 text-center">
-              <p className="text-[10px] font-bold text-gray-400 uppercase">Files Analyzed</p>
+              <p className="text-[10px] font-bold text-gray-400 uppercase">Files Reviewed</p>
               <p className="text-2xl font-black text-brand-500 mt-1">{stats?.documents_analyzed ?? 0}</p>
             </div>
             <div className="bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-4 text-center">
-              <p className="text-[10px] font-bold text-gray-400 uppercase">Saved Citations</p>
+              <p className="text-[10px] font-bold text-gray-400 uppercase">Sources Saved</p>
               <p className="text-2xl font-black text-brand-500 mt-1">{stats?.saved_citations ?? 0}</p>
             </div>
           </>

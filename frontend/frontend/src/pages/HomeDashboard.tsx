@@ -49,32 +49,32 @@ const HomeDashboard: React.FC = () => {
 
   const quickPrompts = [
     {
-      title: 'BNS Murder Provisions',
-      desc: 'Analyze Section 103 of BNS (Murder) & compare with IPC 302.',
-      prompt: 'Compare Section 103 BNS (Murder) with legacy IPC 302.',
-      category: 'Criminal Law',
+      title: 'Eviction Notice',
+      desc: 'Understand what an eviction notice means and what steps to take next.',
+      prompt: 'What should I do if I receive an eviction notice?',
+      category: 'Housing',
     },
     {
-      title: 'Anticipatory Bail Grounds',
-      desc: 'Check guidelines and grounds for bail under CrPC 438/BNSS 482.',
-      prompt: 'What are the main grounds for anticipatory bail under BNSS 482?',
-      category: 'Procedural Law',
+      title: 'Police Inquiry Rights',
+      desc: 'Learn basic rights during questioning, notices, or police visits.',
+      prompt: 'What are my basic rights during a police inquiry?',
+      category: 'Rights',
     },
     {
-      title: 'Lease Dispute Resolution',
-      desc: 'Formulate arbitration and Force Majeure clauses for tenancy.',
-      prompt: 'Draft an arbitration and Force Majeure clause for a tenancy lease.',
-      category: 'Contract Law',
+      title: 'Contract Check',
+      desc: 'Review whether an agreement has the key pieces needed to be reliable.',
+      prompt: 'How do I check if a contract is legally valid?',
+      category: 'Documents',
     },
   ];
 
   const handleQuickStart = async (promptText: string) => {
-    const newSession = await historyService.createSession('New Consultation');
+    const newSession = await historyService.createSession('New Question');
     navigate(`/chat/${newSession.id}`, { state: { initialPrompt: promptText } });
   };
 
   const handleNewChat = async () => {
-    const newSession = await historyService.createSession('New Consultation');
+    const newSession = await historyService.createSession('New Question');
     navigate(`/chat/${newSession.id}`);
   };
 
@@ -93,10 +93,10 @@ const HomeDashboard: React.FC = () => {
             <span>{formattedDate}</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-            Namaste, {user?.fullName || 'Counsel'}
+            Namaste, {user?.fullName || 'there'}
           </h1>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Access your secure Indian Legal AI workspace. Ask queries or upload legal case documents.
+            Ask legal questions in simple words, review saved answers, or upload documents for a plain-language summary.
           </p>
         </div>
         <button
@@ -104,7 +104,7 @@ const HomeDashboard: React.FC = () => {
           className="flex items-center space-x-2 bg-brand-500 hover:bg-brand-600 text-white py-3 px-5 rounded-2xl shadow-lg shadow-brand-500/15 transition-all duration-200 text-sm font-semibold active:scale-[0.98]"
         >
           <Plus size={18} />
-          <span>New Case Consult</span>
+          <span>New Question</span>
         </button>
       </div>
 
@@ -119,22 +119,22 @@ const HomeDashboard: React.FC = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-4 shadow-sm">
             <div className="p-2 bg-blue-500/10 text-blue-500 w-fit rounded-xl mb-3"><FileText size={18} /></div>
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">Documents Analyzed</p>
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">Documents Reviewed</p>
             <h3 className="text-xl font-bold mt-0.5">{stats?.documents_analyzed ?? 0}</h3>
           </div>
           <div className="bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-4 shadow-sm">
             <div className="p-2 bg-indigo-500/10 text-indigo-500 w-fit rounded-xl mb-3"><MessageSquare size={18} /></div>
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">Total Consultations</p>
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">Questions Asked</p>
             <h3 className="text-xl font-bold mt-0.5">{stats?.total_chats ?? 0}</h3>
           </div>
           <div className="bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-4 shadow-sm">
             <div className="p-2 bg-emerald-500/10 text-emerald-500 w-fit rounded-xl mb-3"><Scale size={18} /></div>
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">Drafts Generated</p>
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">Drafts Created</p>
             <h3 className="text-xl font-bold mt-0.5">{stats?.drafts_generated ?? 0}</h3>
           </div>
           <div className="bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-4 shadow-sm">
             <div className="p-2 bg-amber-500/10 text-amber-500 w-fit rounded-xl mb-3"><BookOpen size={18} /></div>
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">Saved Citations</p>
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">Sources Saved</p>
             <h3 className="text-xl font-bold mt-0.5">{stats?.saved_citations ?? 0}</h3>
           </div>
         </div>
@@ -143,11 +143,11 @@ const HomeDashboard: React.FC = () => {
       {/* Grid of Sections */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-        {/* Quick Consultation Starters */}
+          {/* Quick Starters */}
         <div className="md:col-span-2 space-y-4">
           <div className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 font-semibold px-1">
             <Compass size={18} className="text-brand-500" />
-            <h2>Quick Consultation Starters</h2>
+            <h2>Quick Starters</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {quickPrompts.map((item, idx) => (
@@ -162,7 +162,7 @@ const HomeDashboard: React.FC = () => {
                   <p className="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-3 leading-normal">{item.desc}</p>
                 </div>
                 <div className="mt-4 flex items-center justify-between text-xs font-semibold text-brand-500 pt-2 border-t border-gray-100 dark:border-gray-800/50">
-                  <span>Start query</span>
+                  <span>Start</span>
                   <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
@@ -170,7 +170,7 @@ const HomeDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Recent Cases */}
+        {/* Recent Chats */}
         <div className="space-y-4">
           <div className="flex items-center justify-between px-1">
             <h2 className="font-semibold text-gray-700 dark:text-gray-300 flex items-center space-x-2">
@@ -186,7 +186,7 @@ const HomeDashboard: React.FC = () => {
               </div>
             ) : recentChats.length === 0 ? (
               <div className="p-6 text-center text-xs text-gray-500 dark:text-gray-400">
-                No consultation history found. Click "New Case Consult" to begin.
+                No chat history found. Choose "New Question" to begin.
               </div>
             ) : (
               recentChats.map((chat) => (
@@ -198,7 +198,7 @@ const HomeDashboard: React.FC = () => {
                   <div className="p-2 bg-gray-100 dark:bg-gray-800 text-gray-500 rounded-xl"><MessageSquare size={16} /></div>
                   <div className="flex-1 min-w-0">
                     <h4 className="text-xs font-semibold truncate">{chat.title}</h4>
-                    <p className="text-[10px] text-gray-400 dark:text-gray-500 truncate mt-0.5">{chat.summary || 'Consultation file active.'}</p>
+                    <p className="text-[10px] text-gray-400 dark:text-gray-500 truncate mt-0.5">{chat.summary || 'Conversation ready.'}</p>
                   </div>
                   <ArrowRight size={14} className="text-gray-400 mt-1 self-center" />
                 </Link>
@@ -213,7 +213,7 @@ const HomeDashboard: React.FC = () => {
       <div className="bg-gray-100 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800/60 rounded-2xl p-4 flex items-start space-x-3">
         <div className="p-1.5 bg-amber-500/10 text-amber-500 rounded-lg"><Scale size={16} /></div>
         <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-normal">
-          <strong>BCI Compliance Notice</strong>: This system provides informative legal tools, citation references, and document drafting templates. It is not an alternative to an advocate's individual counsel under the Bar Council of India Rules. Please verify critical statutory amendments independently.
+          <strong>Important note</strong>: Nyaya AI explains legal information and helps you prepare questions or documents. It is not a substitute for advice from a qualified professional on your specific situation.
         </p>
       </div>
 

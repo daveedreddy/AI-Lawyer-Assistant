@@ -50,18 +50,18 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 }, [location]);
 
 const handleNewChat = async () => {
-  const newSession = await historyService.createSession("New Consultation");
+  const newSession = await historyService.createSession('New Question');
   setSidebarOpen(false);
   navigate(`/chat/${newSession.id}`);
 };
 
   const menuItems = [
-    { name: 'AI Chat', path: '/chat', icon: MessageSquare },
-    { name: 'Chat History', path: '/history', icon: History },
+    { name: 'Ask Nyaya Samrakshan', path: '/chat', icon: MessageSquare },
+    { name: 'Question History', path: '/history', icon: History },
     { name: 'Profile', path: '/profile', icon: User },
     { name: 'Settings', path: '/settings', icon: Settings },
     { name: 'Help & FAQ', path: '/help', icon: HelpCircle },
-    { name: 'Legal Disclaimer', path: '/disclaimer', icon: AlertTriangle },
+    { name: 'Important Note', path: '/disclaimer', icon: AlertTriangle },
   ];
 
   const handleLogout = async () => {
@@ -91,12 +91,12 @@ const handleNewChat = async () => {
         {/* Brand Header */}
         <div className="p-5 flex items-center justify-between border-b border-gray-200 dark:border-gray-800">
           <Link to="/chat" className="flex items-center space-x-3" onClick={() => setSidebarOpen(false)}>
-            <div className="p-2 bg-brand-500 text-white rounded-xl shadow-md shadow-brand-500/10">
+            <div className="p-2 bg-brand-500 text-white rounded-lg shadow-md shadow-brand-500/10">
               <Scale size={20} />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-wide font-sans">Nyaya AI</h1>
-              <p className="text-[10px] text-gray-500 dark:text-gray-400">AI lawyer assistant</p>
+              <h1 className="text-base font-bold tracking-wide font-sans">Nyaya Samrakshan</h1>
+              <p className="text-[10px] text-gray-500 dark:text-gray-400">Legal help for everyone</p>
             </div>
           </Link>
           <button 
@@ -114,7 +114,7 @@ const handleNewChat = async () => {
             className="w-full flex items-center justify-center space-x-2 bg-brand-500 hover:bg-brand-600 text-white py-2.5 px-4 rounded-xl shadow-lg shadow-brand-500/15 hover:shadow-brand-500/25 active:scale-[0.98] transition-all duration-200 text-sm font-semibold"
           >
             <Plus size={18} />
-            <span>New Consultation</span>
+            <span>New Question</span>
           </button>
         </div>
 
@@ -150,13 +150,13 @@ const handleNewChat = async () => {
           {/* Chat History on the side */}
           <div className="pt-6 pb-2">
             <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 px-3 mb-2 flex items-center justify-between">
-              <span>Recent Cases</span>
+              <span>Recent Questions</span>
               <Link to="/history" className="text-[10px] text-brand-500 hover:underline">View All</Link>
             </div>
             <div className="space-y-1">
               {recentChats.length === 0 ? (
                 <div className="text-[11px] text-gray-400 dark:text-gray-500 px-3 py-2 italic">
-                  No consult history
+                  No questions yet
                 </div>
               ) : (
                 recentChats.map((chat) => {
@@ -216,7 +216,7 @@ const handleNewChat = async () => {
               <Menu size={20} />
             </button>
             <h2 className="text-sm font-semibold tracking-wide text-gray-500 dark:text-gray-400 uppercase">
-              {menuItems.find(item => location.pathname.startsWith(item.path))?.name || 'AI Lawyer Assistant'}
+              {menuItems.find(item => location.pathname.startsWith(item.path))?.name || 'Nyaya Samrakshan'}
             </h2>
           </div>
 
@@ -230,10 +230,10 @@ const handleNewChat = async () => {
               {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
             </button>
 
-            {/* Advocate Badge */}
+            {/* Account Badge */}
             <div className="hidden sm:flex items-center space-x-1.5 px-3 py-1 bg-brand-50 dark:bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-500/20 text-xs font-semibold rounded-full">
               <Scale size={12} />
-              <span>Advocate Verified</span>
+              <span>Private Account</span>
             </div>
           </div>
         </header>

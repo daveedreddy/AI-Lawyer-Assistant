@@ -45,7 +45,7 @@ export const historyService = {
     }
   },
 
-  async createSession(title: string = 'New Consultation'): Promise<ChatSession> {
+  async createSession(title: string = 'New Question'): Promise<ChatSession> {
     const headers = await getAuthHeaders();
     const { data } = await axios.post(`${API}/`, { title }, { headers });
     return mapSession(data);

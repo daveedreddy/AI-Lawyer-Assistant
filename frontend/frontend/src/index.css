@@ -5,6 +5,7 @@
 @layer base {
   body {
     @apply antialiased font-sans selection:bg-brand-500/30 selection:text-brand-900 dark:selection:text-brand-100;
+    background: linear-gradient(135deg, rgba(14, 116, 144, 0.04), rgba(16, 185, 129, 0.04));
   }
 }
 
@@ -54,6 +55,66 @@
 /* Custom input styling for a cleaner look */
 .custom-input {
   @apply w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all duration-200;
+}
+
+.auth-backdrop-pattern {
+  background-image:
+    linear-gradient(120deg, rgba(14, 148, 235, 0.08) 0, rgba(14, 148, 235, 0.08) 1px, transparent 1px, transparent 28px),
+    linear-gradient(30deg, rgba(245, 158, 11, 0.08) 0, rgba(245, 158, 11, 0.08) 1px, transparent 1px, transparent 34px);
+  background-size: 72px 72px;
+  animation: patternDrift 18s linear infinite;
+}
+
+.auth-rail {
+  background: linear-gradient(90deg, transparent, rgba(14, 148, 235, 0.18), rgba(245, 158, 11, 0.18), transparent);
+  animation: railSweep 5s ease-in-out infinite;
+}
+
+.justice-watermark {
+  filter: grayscale(1) sepia(0.2) saturate(0.55);
+  transform-origin: center;
+  animation: watermarkBreathe 9s ease-in-out infinite;
+}
+
+.dark .justice-watermark {
+  filter: grayscale(1) sepia(0.05) saturate(0.35) invert(0.95);
+}
+
+.surface-lift {
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.surface-lift:hover {
+  transform: translateY(-2px);
+}
+
+@keyframes patternDrift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 72px 72px, -72px 72px;
+  }
+}
+
+@keyframes railSweep {
+  0%, 100% {
+    opacity: 0.35;
+    transform: translateX(-8%);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(8%);
+  }
+}
+
+@keyframes watermarkBreathe {
+  0%, 100% {
+    transform: scale(0.985);
+  }
+  50% {
+    transform: scale(1.015);
+  }
 }
 
 /* Markdown styling inside messages */

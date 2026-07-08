@@ -6,7 +6,7 @@ const mapUser = (supabaseUser: any, profile: any): User => ({
   email: supabaseUser.email ?? '',
   fullName: profile?.full_name ?? supabaseUser.user_metadata?.full_name ?? supabaseUser.email?.split('@')[0] ?? '',
   barEnrollment: profile?.bar_enrollment ?? supabaseUser.user_metadata?.bar_enrollment,
-  practiceAreas: profile?.practice_areas ?? ['General Practice'],
+  practiceAreas: profile?.practice_areas ?? ['Everyday Legal Help'],
   createdAt: supabaseUser.created_at,
 });
 
@@ -40,7 +40,6 @@ export const authService = {
   async signUp(
     fullName: string,
     email: string,
-    barEnrollment: string,
     password: string
   ): Promise<{ token: string; user: User }> {
     const { data, error } = await supabase.auth.signUp({
@@ -55,12 +54,12 @@ export const authService = {
     await supabase.from('user_profiles').upsert({
       id: data.user.id,
       full_name: fullName,
-      bar_enrollment: barEnrollment,
-      practice_areas: ['General Practice'],
+      bar_enrollment: null,
+      practice_areas: ['Everyday Legal Help'],
       email,
     });
 
-    const user = mapUser(data.user, { full_name: fullName, bar_enrollment: barEnrollment, practice_areas: ['General Practice'] });
+    const user = mapUser(data.user, { full_name: fullName, bar_enrollment: null, practice_areas: ['Everyday Legal Help'] });
     return { token: data.session?.access_token ?? '', user };
   },
 
